@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Football Matchups</title>
+</head>
+<body>
+    <h1>Power 5 or Top 25 College Football Matchups</h1>
+    <ul>
+        {% for matchup in matchups %}
+        <li>{{ matchup }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
