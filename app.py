@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import requests
 from datetime import datetime, timedelta
+import pytz  # For time zone conversion
+
 
 app = Flask(__name__)
 
@@ -37,6 +39,15 @@ def get_current_week():
     current_week = (days_since_start // 7)
     return max(1, current_week)
 
+#Function to calculate time from UTC to Eastern time
+def convert_to_eastern(utc_datetime_str):
+    utc_time = datetime.strptime(utc_datetime_str, "%Y-%m-%dT%H:%MZ")
+    eastern = pytz.timezone('US/Eastern')
+    utc_time = pytz.utc.localize(utc_time)
+    eastern_time = utc_time.astimezone(eastern)
+    return eastern_time.strftime('%Y-%m-%d %I:%M %p')
+
+
 @app.route('/')
 def index():
     # ESPN College Football scoreboard API URL
@@ -61,20 +72,36 @@ def index():
                 competitions = event.get('competitions', [])
                 if not competitions:
                     continue
-
+                
+                # Extract the competitors and the game status
                 competitors = competitions[0].get('competitors', [])
                 if len(competitors) < 2:
                     continue
-
+                
                 team_1 = competitors[0]['team']['displayName']
                 team_1_logo = competitors[0]['team'].get('logo')
                 team_1_home_away = competitors[0]['homeAway']
                 team_1_rank = competitors[0].get('curatedRank', {}).get('current', None)
+                team_1_score = competitors[0].get('score', None)
 
                 team_2 = competitors[1]['team']['displayName']
                 team_2_logo = competitors[1]['team'].get('logo')
                 team_2_home_away = competitors[1]['homeAway']
                 team_2_rank = competitors[1].get('curatedRank', {}).get('current', None)
+                team_2_score = competitors[1].get('score', None)
+
+                                # Extract the game status and start time
+                status = competitions[0]['status']['type']['state']
+                start_time = convert_to_eastern(competitions[0]['date'])
+
+                # Determine the winner if the game has finished
+                if status == "post":
+                    if int(team_1_score) > int(team_2_score):
+                        winner = team_1
+                    else:
+                        winner = team_2
+                else:
+                    winner = None
 
                 # Add the rank before the team name if the team is ranked
                 if team_1_rank and team_1_rank <= 25:
@@ -101,9 +128,14 @@ def index():
                     matchups.append({
                         'team_1': away_team,
                         'team_1_logo': away_team_logo,
+                        'team_1_score': team_1_score,
                         'team_2': home_team,
                         'team_2_logo': home_team_logo,
-                        'spread': spread
+                        'team_2_score': team_2_score,
+                        'status': status,
+                        'start_time': start_time,
+                        'spread': spread,
+                        'winner': winner
                     })
 
         return render_template('index.html', matchups=matchups, current_week=current_week)

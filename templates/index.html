@@ -26,6 +26,8 @@
             padding: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
         }
         .team {
             display: flex;
@@ -37,6 +39,9 @@
             height: 40px;
             margin-right: 10px;
         }
+        .team-name {
+            margin-right: 20px;
+        }
         .spread {
             font-size: 0.9em;
             color: #6c757d;
@@ -46,6 +51,17 @@
             color: #000;
             font-weight: normal;
             margin-left: 3px;
+        }
+        .team-score {
+            margin-left: 10px;
+            font-size: 1.1em;
+        }
+        .game-info {
+            text-align: right;
+            font-size: 0.9em;
+        }
+        .winner {
+            font-weight: bold;
         }
         .btn-picks {
             display: block;
@@ -67,15 +83,47 @@
         <div class="matchup-list">
             {% for matchup in matchups %}
             <div class="matchup-item">
-                <div class="team">
-                    <img src="{{ matchup['team_1_logo'] }}" alt="Team 1 Logo" class="team-logo">
-                    <strong>{{ matchup['team_1']|safe }}</strong>
+                <!-- Teams and logos -->
+                <div>
+                    <div class="team">
+                        <img src="{{ matchup['team_1_logo'] }}" alt="Team 1 Logo" class="team-logo">
+                        <strong class="team-name">{{ matchup['team_1']|safe }}</strong>
+                        {% if matchup['status'] == 'in' %}
+                            <span class="team-score">{{ matchup['team_1_score'] }}</span>
+                        {% elif matchup['status'] == 'post' %}
+                            {% if matchup['winner'] == matchup['team_1'] %}
+                                <span class="team-score winner">{{ matchup['team_1_score'] }}</span>
+                            {% else %}
+                                <span class="team-score">{{ matchup['team_1_score'] }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="team">
+                        <img src="{{ matchup['team_2_logo'] }}" alt="Team 2 Logo" class="team-logo">
+                        <strong class="team-name">{{ matchup['team_2']|safe }}</strong>
+                        {% if matchup['status'] == 'in' %}
+                            <span class="team-score">{{ matchup['team_2_score'] }}</span>
+                        {% elif matchup['status'] == 'post' %}
+                            {% if matchup['winner'] == matchup['team_2'] %}
+                                <span class="team-score winner">{{ matchup['team_2_score'] }}</span>
+                            {% else %}
+                                <span class="team-score">{{ matchup['team_2_score'] }}</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <p class="spread">Spread: {{ matchup['spread'] }}</p>
                 </div>
-                <div class="team">
-                    <img src="{{ matchup['team_2_logo'] }}" alt="Team 2 Logo" class="team-logo">
-                    <strong>{{ matchup['team_2']|safe }}</strong>
+
+                <!-- Game status or start time -->
+                <div class="game-info">
+                    {% if matchup['status'] == 'in' %}
+                        <p>Live</p>
+                    {% elif matchup['status'] == 'post' %}
+                        <p>Final</p>
+                    {% else %}
+                        <p>Start Time: {{ matchup['start_time'] }}</p>
+                    {% endif %}
                 </div>
-                <p class="spread">Spread: {{ matchup['spread'] }}</p>
             </div>
             {% endfor %}
         </div>
