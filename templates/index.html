@@ -41,7 +41,8 @@
             margin-right: 10px;
         }
         .team-name {
-            margin-right: 10px;
+            width: 200px;
+			margin-right: 10px;
         }
         .team-score {
             font-size: 1.1em;
@@ -86,7 +87,7 @@
                         <img src="{{ matchup['team_1_logo'] }}" alt="Team 1 Logo" class="team-logo">
                         <strong class="team-name">{{ matchup['team_1']|safe }}</strong>
                         {% if matchup['status'] == 'in' %}
-                            <span class="team-score">{{ matchup['team_1_score'] }}</span>
+                            <span class="team-score">{{ matchup['team_2_score'] }}</span>
                         {% elif matchup['status'] == 'post' %}
                             {% if matchup['team_1_score'] < matchup['team_2_score'] %}
                                 <span class="team-score winner">{{ matchup['team_2_score'] }}</span>
@@ -99,7 +100,7 @@
                         <img src="{{ matchup['team_2_logo'] }}" alt="Team 2 Logo" class="team-logo">
                         <strong class="team-name">{{ matchup['team_2']|safe }}</strong>
                         {% if matchup['status'] == 'in' %}
-                            <span class="team-score">{{ matchup['team_2_score'] }}</span>
+                            <span class="team-score">{{ matchup['team_1_score'] }}</span>
                         {% elif matchup['status'] == 'post' %}
                             {% if matchup['team_2_score'] < matchup['team_1_score'] %}
                                 <span class="team-score winner">{{ matchup['team_1_score'] }}</span>
@@ -114,9 +115,9 @@
                 <!-- Game status or start time -->
                 <div class="game-info">
                     {% if matchup['status'] == 'in' %}
-                        <p>Live</p>
+                        <p style="color: red;">Live</p>
                     {% elif matchup['status'] == 'post' %}
-                        <p>Final</p>
+                        <p><b>Final</b></p>
                     {% else %}
                         <p>Start Time: {{ matchup['start_time'] }}</p>
                     {% endif %}
