@@ -28,6 +28,7 @@
             margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         .team {
             display: flex;
@@ -40,28 +41,24 @@
             margin-right: 10px;
         }
         .team-name {
-            margin-right: 20px;
-        }
-        .spread {
-            font-size: 0.9em;
-            color: #6c757d;
-        }
-        .rank {
-            font-size: 0.8em;
-            color: #000;
-            font-weight: normal;
-            margin-left: 3px;
+            margin-right: 10px;
         }
         .team-score {
-            margin-left: 10px;
             font-size: 1.1em;
+            margin-left: 10px;
+            width: 50px;
+            text-align: center;
+        }
+        .winner {
+            font-weight: bold;
         }
         .game-info {
             text-align: right;
             font-size: 0.9em;
         }
-        .winner {
-            font-weight: bold;
+        .spread {
+            font-size: 0.9em;
+            color: #6c757d;
         }
         .btn-picks {
             display: block;
@@ -91,10 +88,10 @@
                         {% if matchup['status'] == 'in' %}
                             <span class="team-score">{{ matchup['team_1_score'] }}</span>
                         {% elif matchup['status'] == 'post' %}
-                            {% if matchup['winner'] == matchup['team_1'] %}
-                                <span class="team-score winner">{{ matchup['team_1_score'] }}</span>
+                            {% if matchup['team_1_score'] < matchup['team_2_score'] %}
+                                <span class="team-score winner">{{ matchup['team_2_score'] }}</span>
                             {% else %}
-                                <span class="team-score">{{ matchup['team_1_score'] }}</span>
+                                <span class="team-score">{{ matchup['team_2_score'] }}</span>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -104,10 +101,10 @@
                         {% if matchup['status'] == 'in' %}
                             <span class="team-score">{{ matchup['team_2_score'] }}</span>
                         {% elif matchup['status'] == 'post' %}
-                            {% if matchup['winner'] == matchup['team_2'] %}
-                                <span class="team-score winner">{{ matchup['team_2_score'] }}</span>
+                            {% if matchup['team_2_score'] < matchup['team_1_score'] %}
+                                <span class="team-score winner">{{ matchup['team_1_score'] }}</span>
                             {% else %}
-                                <span class="team-score">{{ matchup['team_2_score'] }}</span>
+                                <span class="team-score">{{ matchup['team_1_score'] }}</span>
                             {% endif %}
                         {% endif %}
                     </div>
