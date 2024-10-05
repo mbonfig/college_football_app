@@ -34,7 +34,7 @@ def get_current_week():
     season_start_date = datetime(2024, 8, 24)
     current_date = datetime.now()
     days_since_start = (current_date - season_start_date).days
-    current_week = (days_since_start // 7) + 1
+    current_week = (days_since_start // 7)
     return max(1, current_week)
 
 @app.route('/')
