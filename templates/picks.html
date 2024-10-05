@@ -47,7 +47,6 @@
                     <option value="">Select your first pick</option>
                     {% for matchup in matchups %}
                         <option value="{{ matchup['team_1'] }}">{{ matchup['team_1'] }} at {{ matchup['team_2'] }}</option>
-                        <option value="{{ matchup['team_2'] }}">{{ matchup['team_2'] }} vs {{ matchup['team_1'] }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -58,7 +57,6 @@
                     <option value="">Select your second pick</option>
                     {% for matchup in matchups %}
                         <option value="{{ matchup['team_1'] }}">{{ matchup['team_1'] }} at {{ matchup['team_2'] }}</option>
-                        <option value="{{ matchup['team_2'] }}">{{ matchup['team_2'] }} vs {{ matchup['team_1'] }}</option>
                     {% endfor %}
                 </select>
             </div>

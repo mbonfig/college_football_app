@@ -112,7 +112,7 @@ def index():
         return f"Failed to retrieve data. Status code: {response.status_code}"
 
 # Route for picks and leaderboard
-@app.route('/picks', methods=['GET', 'POST'])
+@app.route('/picks', methods=['GET', 'POST']) 
 def picks():
     # ESPN College Football scoreboard API URL
     url = "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard"
@@ -122,13 +122,14 @@ def picks():
     start_date = monday.strftime('%Y%m%d')
     end_date = sunday.strftime('%Y%m%d')
 
+    # Request data for the current week's matchups
     params = {'dates': f'{start_date}-{end_date}'}
     response = requests.get(url, params=params)
 
     if response.status_code == 200:
         data = response.json()
         matchups = []
-        current_week = get_current_week()
+        current_week = get_current_week()      
 
         if data.get('events'):
             for event in data['events']:
@@ -143,15 +144,22 @@ def picks():
                 team_1 = competitors[0]['team']['displayName']
                 team_2 = competitors[1]['team']['displayName']
 
+                # Extract team rankings
+                team_1_rank = competitors[0].get('curatedRank', {}).get('current', None)
+                team_2_rank = competitors[1].get('curatedRank', {}).get('current', None)
+
+                # Odds/spread details
                 odds = competitions[0].get('odds', [])
                 spread = odds[0].get('details', 'N/A') if odds else 'N/A'
 
-                matchups.append({
-                    'team_1': team_1,
-                    'team_2': team_2,
-                    'spread': spread,
-                    'game_id': event['id']
-                })
+                # Add only matchups where at least one team is in Power 5 or Top 25 ranked
+                if (team_1 in power_5_teams or team_2 in power_5_teams) or (team_1_rank and team_1_rank <= 25) or (team_2_rank and team_2_rank <= 25):
+                    matchups.append({
+                        'team_1': team_1,
+                        'team_2': team_2,
+                        'spread': spread,
+                        'game_id': event['id']
+                    })
 
         if request.method == 'POST':
             player_name = request.form['player_name']
@@ -164,6 +172,9 @@ def picks():
             return redirect(url_for('picks'))
 
         return render_template('picks.html', matchups=matchups, current_week=current_week, leaderboard=leaderboard)
+
+    else:
+        return f"Failed to retrieve data. Status code: {response.status_code}"
 
 if __name__ == '__main__':
     app.run(debug=True)
