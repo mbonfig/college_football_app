@@ -1,14 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Football Matchups</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .matchup-list {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .matchup-item {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 5px;
+        }
+        .team {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .team-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .spread {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .rank {
+            font-size: 0.8em;
+            color: #000;
+            font-weight: normal;
+            margin-left: 3px;
+        }
+        .btn-picks {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Power 5 or Top 25 College Football Matchups</h1>
-    <ul>
-        {% for matchup in matchups %}
-        <li>{{ matchup }}</li>
-        {% endfor %}
-    </ul>
+
+    <div class="container">
+        <h1>College Football Matchups - Week {{ current_week }}</h1>
+
+        <!-- Link to the picks page -->
+        <div class="btn-picks">
+            <a href="/picks" class="btn btn-primary">Make Your Picks</a>
+        </div>
+
+        <div class="matchup-list">
+            {% for matchup in matchups %}
+            <div class="matchup-item">
+                <div class="team">
+                    <img src="{{ matchup['team_1_logo'] }}" alt="Team 1 Logo" class="team-logo">
+                    <strong>{{ matchup['team_1']|safe }}</strong>
+                </div>
+                <div class="team">
+                    <img src="{{ matchup['team_2_logo'] }}" alt="Team 2 Logo" class="team-logo">
+                    <strong>{{ matchup['team_2']|safe }}</strong>
+                </div>
+                <p class="spread">Spread: {{ matchup['spread'] }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

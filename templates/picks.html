@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Football Picks</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .leaderboard {
+            margin-top: 40px;
+        }
+        .btn-back {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Make Your Picks - Week {{ current_week }}</h1>
+
+        <!-- Form for submitting picks -->
+        <form method="POST">
+            <div class="form-group">
+                <label for="player_name">Player Name:</label>
+                <input type="text" class="form-control" id="player_name" name="player_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pick_1">Pick 1:</label>
+                <select class="form-control" id="pick_1" name="pick_1" required>
+                    <option value="">Select your first pick</option>
+                    {% for matchup in matchups %}
+                        <option value="{{ matchup['team_1'] }}">{{ matchup['team_1'] }} at {{ matchup['team_2'] }}</option>
+                        <option value="{{ matchup['team_2'] }}">{{ matchup['team_2'] }} vs {{ matchup['team_1'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pick_2">Pick 2:</label>
+                <select class="form-control" id="pick_2" name="pick_2" required>
+                    <option value="">Select your second pick</option>
+                    {% for matchup in matchups %}
+                        <option value="{{ matchup['team_1'] }}">{{ matchup['team_1'] }} at {{ matchup['team_2'] }}</option>
+                        <option value="{{ matchup['team_2'] }}">{{ matchup['team_2'] }} vs {{ matchup['team_1'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Picks</button>
+        </form>
+
+        <!-- Leaderboard Section -->
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul>
+                {% for player, points in leaderboard.items() %}
+                    <li>{{ player }}: {{ points }} points</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Link back to the main page -->
+        <div class="btn-back">
+            <a href="/" class="btn btn-secondary">Back to Matchups</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
