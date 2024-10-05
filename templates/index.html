@@ -41,7 +41,7 @@
             margin-right: 10px;
         }
         .team-name {
-            width: 200px;
+            width: 180px;
 			margin-right: 10px;
         }
         .team-score {
@@ -66,6 +66,10 @@
             margin: 20px auto;
             text-align: center;
         }
+		        .football-icon {
+            margin-left: 5px;
+            color: #ff4500;
+        }
     </style>
 </head>
 <body>
@@ -88,6 +92,9 @@
                         <strong class="team-name">{{ matchup['team_1']|safe }}</strong>
                         {% if matchup['status'] == 'in' %}
                             <span class="team-score">{{ matchup['team_2_score'] }}</span>
+						{% if matchup['possession'] == 'team_2' %}
+                            <span class="football-icon">🏈</span>
+                        {% endif %}
                         {% elif matchup['status'] == 'post' %}
                             {% if matchup['team_1_score'] < matchup['team_2_score'] %}
                                 <span class="team-score winner">{{ matchup['team_2_score'] }}</span>
@@ -101,6 +108,9 @@
                         <strong class="team-name">{{ matchup['team_2']|safe }}</strong>
                         {% if matchup['status'] == 'in' %}
                             <span class="team-score">{{ matchup['team_1_score'] }}</span>
+						{% if matchup['possession'] == 'team_1' %}
+                            <span class="football-icon">🏈</span>
+                        {% endif %}
                         {% elif matchup['status'] == 'post' %}
                             {% if matchup['team_2_score'] < matchup['team_1_score'] %}
                                 <span class="team-score winner">{{ matchup['team_1_score'] }}</span>
@@ -116,6 +126,7 @@
                 <div class="game-info">
                     {% if matchup['status'] == 'in' %}
                         <p style="color: red;">Live</p>
+						<p>{{ matchup['time_remaining'] }} {{ matchup['quarter'] }}Q</p>
                     {% elif matchup['status'] == 'post' %}
                         <p><b>Final</b></p>
                     {% else %}

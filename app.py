@@ -90,9 +90,25 @@ def index():
                 team_2_rank = competitors[1].get('curatedRank', {}).get('current', None)
                 team_2_score = competitors[1].get('score', None)
 
-                                # Extract the game status and start time
+                # Extract the game status and start time
                 status = competitions[0]['status']['type']['state']
                 start_time = convert_to_eastern(competitions[0]['date'])
+
+                # Extract time remaining and quarter for live games
+                time_remaining = None
+                quarter = None
+                if status == 'in':
+                    time_remaining = competitions[0]['status']['displayClock']
+                    quarter = competitions[0]['status']['period']
+
+                # Extract possession information for live games
+                possession = None
+                if status == 'in':
+                    possession_team_id = competitions[0].get('situation', {}).get('possession', None)
+                    if possession_team_id == competitors[0]['team']['id']:
+                        possession = 'team_1'
+                    elif possession_team_id == competitors[1]['team']['id']:
+                        possession = 'team_2'
 
                 # Determine the winner if the game has finished
                 if status == "post":
@@ -135,7 +151,10 @@ def index():
                         'status': status,
                         'start_time': start_time,
                         'spread': spread,
-                        'winner': winner
+                        'winner': winner,
+                        'time_remaining': time_remaining,
+                        'possession': possession,
+                        'quarter': quarter
                     })
 
         return render_template('index.html', matchups=matchups, current_week=current_week)
