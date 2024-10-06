@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week {{ week }} Winner Celebration!</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .winner-container {
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .winner-header {
+            font-size: 2.5rem;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .congrats-text {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        .picks-list, .results-list {
+            font-size: 1.25rem;
+            list-style: none;
+            padding: 0;
+        }
+        .picks-list li, .results-list li {
+            margin: 10px 0;
+        }
+        .picks-list li {
+            color: #007bff;
+        }
+        .trophy-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ffc107;
+        }
+        .results-section {
+            margin-top: 40px;
+        }
+        .results-header {
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        .results-player {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+        .results-pick {
+            font-size: 1.1rem;
+            color: #007bff;
+        }
+        .win-icon {
+            color: #28a745;
+        }
+        .lose-icon {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container winner-container">
+        <div class="trophy-icon">🏆</div>
+        <h1 class="winner-header">Congratulations {{ winner_name }}!</h1>
+        <p class="congrats-text">Fucking Faris is the winner for Week {{ week }} with perfect underdog picks!</p>
+
+        <h3>Your Correct Picks:</h3>
+        <ul class="picks-list">
+            {% for pick in correct_picks %}
+                <li>{{ pick }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="results-section">
+            <h3 class="results-header">Week {{ week }} Results:</h3>
+
+            <!-- Loop through the player results and display each player's name and picks -->
+            {% for player in player_results %}
+                <div class="results-player"><strong>{{ player.name }}</strong></div>
+                <ul class="results-list">
+                    {% for pick in player.picks %}
+                        <li class="results-pick">{{ pick }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

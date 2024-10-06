@@ -77,6 +77,12 @@
     <div class="container">
         <h1>College Football Matchups - Week {{ current_week }}</h1>
 
+        <!-- Link to the celebrations page -->		
+		<div class="btn-picks">
+    <a href="/celebration" class="btn btn-success">Check Week {{ current_week }} Results</a>
+</div>
+
+
         <!-- Link to the picks page -->
         <div class="btn-picks">
             <a href="/picks" class="btn btn-primary">Make Your Picks</a>
@@ -97,7 +103,7 @@
                         {% endif %}
                         {% elif matchup['status'] == 'post' %}
                             {% if matchup['team_1_score'] < matchup['team_2_score'] %}
-                                <span class="team-score winner">{{ matchup['team_2_score'] }}</span>
+                                <span class="team-score winner">{{ matchup['team_2_score'] }}🍆</span>
                             {% else %}
                                 <span class="team-score">{{ matchup['team_2_score'] }}</span>
                             {% endif %}
@@ -113,7 +119,7 @@
                         {% endif %}
                         {% elif matchup['status'] == 'post' %}
                             {% if matchup['team_2_score'] < matchup['team_1_score'] %}
-                                <span class="team-score winner">{{ matchup['team_1_score'] }}</span>
+                                <span class="team-score winner">{{ matchup['team_1_score'] }}🍆</span>
                             {% else %}
                                 <span class="team-score">{{ matchup['team_1_score'] }}</span>
                             {% endif %}

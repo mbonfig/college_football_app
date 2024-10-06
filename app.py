@@ -48,6 +48,8 @@ def convert_to_eastern(utc_datetime_str):
     return eastern_time.strftime('%Y-%m-%d %I:%M %p')
 
 
+
+
 @app.route('/')
 def index():
     # ESPN College Football scoreboard API URL
@@ -89,6 +91,10 @@ def index():
                 team_2_home_away = competitors[1]['homeAway']
                 team_2_rank = competitors[1].get('curatedRank', {}).get('current', None)
                 team_2_score = competitors[1].get('score', None)
+
+                # Convert scores to integers if they exist, otherwise default to None or 0
+                team_1_score = int(team_1_score) if team_1_score is not None else 0
+                team_2_score = int(team_2_score) if team_2_score is not None else 0
 
                 # Extract the game status and start time
                 status = competitions[0]['status']['type']['state']
@@ -161,6 +167,41 @@ def index():
 
     else:
         return f"Failed to retrieve data. Status code: {response.status_code}"
+
+
+# This route will render a celebration page for Matt Faris
+@app.route('/celebration')
+def celebration():
+    # This route will render a celebration page for Matt Faris
+    winner_name = "Matt Faris"
+    correct_picks = ["SMU +6.5 ✅", "Minnesota +8.5 ✅"]
+    week = 6
+
+    # Results for all participants
+    player_results = [
+        {
+            'name': 'Faris',
+            'picks': ['SMU +6.5 ✅', 'Minnesota +8.5 ✅']
+        },
+        {
+            'name': 'Mike',
+            'picks': ['Syracuse +6.5 ✅', 'Stanford +8 ❌']
+        },
+        {
+            'name': 'Alex',
+            'picks': ['Arkansas +13.5 ✅', 'Duke +8.5 ❌']
+        },
+        {
+            'name': 'Herm',
+            'picks': ['SMU +6.5 ✅', 'Stanford +8 ❌']
+        },
+        {
+            'name': 'Fied',
+            'picks': ['Stanford +8 ❌', 'Duke +8.5 ❌']
+        }
+    ]
+    
+    return render_template('celebration.html', winner_name=winner_name, correct_picks=correct_picks, player_results=player_results, week=week)
 
 # Route for picks and leaderboard
 @app.route('/picks', methods=['GET', 'POST']) 
