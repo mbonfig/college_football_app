@@ -172,10 +172,18 @@ def index():
 # This route will render a celebration page for Matt Faris
 @app.route('/celebration')
 def celebration():
-    # This route will render a celebration page for Matt Faris
     winner_name = "Matt Faris"
     correct_picks = ["SMU +6.5 ✅", "Minnesota +8.5 ✅"]
     week = 6
+
+    # Standings data
+    standings = [
+        {'name': 'Faris', 'points': 55},
+        {'name': 'Alex', 'points': 37},
+        {'name': 'Mike', 'points': 31.5},
+        {'name': 'Herm', 'points': 6.5},
+        {'name': 'Fied', 'points': 0}
+    ]
 
     # Results for all participants
     player_results = [
@@ -201,7 +209,7 @@ def celebration():
         }
     ]
     
-    return render_template('celebration.html', winner_name=winner_name, correct_picks=correct_picks, player_results=player_results, week=week)
+    return render_template('celebration.html', winner_name=winner_name, correct_picks=correct_picks, player_results=player_results, standings=standings, week=week)
 
 # Route for picks and leaderboard
 @app.route('/picks', methods=['GET', 'POST']) 
