@@ -33,7 +33,7 @@ leaderboard = {}
 
 # Function to calculate the current week based on the season start date
 def get_current_week():
-    season_start_date = datetime(2024, 8, 24)
+    season_start_date = datetime(2024, 8, 19)
     current_date = datetime.now()
     days_since_start = (current_date - season_start_date).days
     current_week = (days_since_start // 7)
